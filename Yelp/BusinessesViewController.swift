@@ -8,11 +8,13 @@
 
 import UIKit
 
-class BusinessesViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, UISearchBarDelegate {
+class BusinessesViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, UISearchBarDelegate, UIScrollViewDelegate {
     
     var businesses: [Business]!
     var filtered: [Business]!
     var searchBar: UISearchBar!
+    var isMoreDataLoading = false
+    var offset = 0
     
     @IBOutlet weak var tableView: UITableView!
     
@@ -85,6 +87,28 @@ class BusinessesViewController: UIViewController, UITableViewDataSource, UITable
             return item.name?.range(of: searchText, options: .caseInsensitive, range: nil, locale: nil) != nil
         }
         tableView.reloadData()
+    }
+    
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        if (!isMoreDataLoading) {
+            
+            let scrollViewContentHeight = tableView.contentSize.height
+            let scrollOffsetThreshold = scrollViewContentHeight - tableView.bounds.size.height
+            
+            if (scrollView.contentOffset.y > scrollOffsetThreshold && tableView.isDragging) {
+                isMoreDataLoading = true
+                
+                Business.searchWithTerm(term: "Thai", sort: nil, categories: nil, deals: nil, offset: offset, completion: { (businesses: [Business]?, error: Error?) -> Void in
+                    
+                    self.businesses = businesses
+                    self.filtered = businesses
+                    self.tableView.reloadData()
+                    self.offset += 1
+                    
+                }
+                )
+            }
+        }
     }
     
     /*
