@@ -14,7 +14,7 @@ class BusinessesViewController: UIViewController, UITableViewDataSource, UITable
     var filtered: [Business]!
     var searchBar: UISearchBar!
     var isMoreDataLoading = false
-    var offset = 0
+    var loadingMoreView:InfiniteScrollActivityView?
     
     @IBOutlet weak var tableView: UITableView!
     
@@ -25,6 +25,16 @@ class BusinessesViewController: UIViewController, UITableViewDataSource, UITable
         tableView.dataSource = self
         tableView.rowHeight = UITableViewAutomaticDimension
         tableView.estimatedRowHeight = 120
+        
+        // Set up Infinite Scroll loading indicator
+        let frame = CGRect(x: 0, y: tableView.contentSize.height, width: tableView.bounds.size.width, height: InfiniteScrollActivityView.defaultHeight)
+        loadingMoreView = InfiniteScrollActivityView(frame: frame)
+        loadingMoreView!.isHidden = true
+        tableView.addSubview(loadingMoreView!)
+        
+        var insets = tableView.contentInset
+        insets.bottom += InfiniteScrollActivityView.defaultHeight
+        tableView.contentInset = insets
         
         searchBar = UISearchBar()
         searchBar.delegate = self
@@ -98,12 +108,21 @@ class BusinessesViewController: UIViewController, UITableViewDataSource, UITable
             if (scrollView.contentOffset.y > scrollOffsetThreshold && tableView.isDragging) {
                 isMoreDataLoading = true
                 
+                // Update position of loadingMoreView, and start loading indicator
+                let frame = CGRect(x: 0, y: tableView.contentSize.height, width: tableView.bounds.size.width, height: InfiniteScrollActivityView.defaultHeight)
+                loadingMoreView?.frame = frame
+                loadingMoreView!.startAnimating()
+                
+                //self.offset += 20
+                let offset = self.tableView.numberOfRows(inSection: 0)
+                
                 Business.searchWithTerm(term: "Thai", sort: nil, categories: nil, deals: nil, offset: offset, completion: { (businesses: [Business]?, error: Error?) -> Void in
                     
-                    self.businesses = businesses
-                    self.filtered = businesses
+                    self.isMoreDataLoading = false
+                    self.loadingMoreView!.stopAnimating()
+                    self.businesses! += businesses!
+                    self.filtered = self.businesses
                     self.tableView.reloadData()
-                    self.offset += 1
                     
                 }
                 )
