@@ -40,20 +40,21 @@ class BusinessesViewController: UIViewController, UITableViewDataSource, UITable
         searchBar.delegate = self
         searchBar.sizeToFit()
         navigationItem.titleView = searchBar
+        navigationController?.navigationBar.barTintColor = UIColor.red
         
         Business.searchWithTerm(term: "Thai", completion: { (businesses: [Business]?, error: Error?) -> Void in
             
             self.businesses = businesses
             self.filtered = businesses
             self.tableView.reloadData()
-            
+            /*
             if let businesses = businesses {
                 for business in businesses {
                     print(business.name!)
                     print(business.address!)
                 }
             }
-            
+            */
             }
         )
         
@@ -130,14 +131,16 @@ class BusinessesViewController: UIViewController, UITableViewDataSource, UITable
         }
     }
     
-    /*
-     // MARK: - Navigation
+    // MARK: - Navigation
      
-     // In a storyboard-based application, you will often want to do a little preparation before navigation
-     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-     // Get the new view controller using segue.destinationViewController.
-     // Pass the selected object to the new view controller.
-     }
-     */
+    // In a storyboard-based application, you will often want to do a little preparation before navigation
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        // Get the new view controller using segue.destinationViewController.
+        // Pass the selected object to the new view controller.
+        let mapViewController = segue.destination as! MapViewController
+        mapViewController.businesses = filtered
+        print("segue")
+    }
+    
     
 }

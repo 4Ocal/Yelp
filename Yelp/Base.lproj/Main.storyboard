@@ -29,7 +29,7 @@
                                         <rect key="frame" x="0.0" y="28" width="320" height="132"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="uv1-xb-8HM" id="mYO-fV-NvU">
-                                            <rect key="frame" x="0.0" y="0.0" width="320" height="131"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="320" height="131.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="vPD-4b-6fa">
@@ -127,7 +127,14 @@
                             <constraint firstItem="6wH-Ak-IZg" firstAttribute="leading" secondItem="XhR-oz-92f" secondAttribute="leading" id="edc-1Z-1oo"/>
                         </constraints>
                     </view>
-                    <navigationItem key="navigationItem" id="9eT-gb-VBh"/>
+                    <navigationItem key="navigationItem" id="9eT-gb-VBh">
+                        <barButtonItem key="rightBarButtonItem" title="Map" id="vYO-T0-vwT">
+                            <connections>
+                                <action selector="prepareForMapView:" destination="2xI-yr-O5N" id="zqJ-wA-z40"/>
+                                <segue destination="euY-eb-Y6i" kind="push" id="DDx-4k-vCX"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
                     <connections>
                         <outlet property="tableView" destination="6wH-Ak-IZg" id="mgD-fq-7Pe"/>
                     </connections>
@@ -135,6 +142,34 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Fgb-4b-F1b" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="1518" y="396"/>
+        </scene>
+        <!--Map View Controller-->
+        <scene sceneID="xRA-xy-OkB">
+            <objects>
+                <viewController id="euY-eb-Y6i" customClass="MapViewController" customModule="Yelp" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="cvp-TN-Q2G"/>
+                        <viewControllerLayoutGuide type="bottom" id="5We-zQ-37N"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="QeW-ss-vb9">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" mapType="standard" showsUserLocation="YES" translatesAutoresizingMaskIntoConstraints="NO" id="2Yy-nK-moU">
+                                <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            </mapView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    </view>
+                    <navigationItem key="navigationItem" id="iJU-0J-Ad2"/>
+                    <connections>
+                        <outlet property="mapView" destination="2Yy-nK-moU" id="ghq-mR-NBU"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="cNb-x2-Hk1" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1910" y="396"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="wbk-UT-buz">
